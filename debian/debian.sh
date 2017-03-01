@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Constants
+apt="apt-get"
+
 # Defaults
 user="user"
 host="debian"
@@ -20,8 +23,8 @@ fi
 
 # Update packages
 echo -n "Updating and upgrading apt packages... "
-apt update > /dev/null
-apt upgrade -y > /dev/null
+$apt update > /dev/null
+$apt upgrade -y > /dev/null
 echo "Done"
 
 # Create new user
@@ -30,7 +33,7 @@ echo "Created new user '$user'"
 
 # Sudo
 echo "### USER ADDED TO SUDOERS ###" >> /etc/sudoers 
-echo "$user\t(ALL:ALL) ALL\n" >> /etc/sudoers
+echo "$user\t(ALL:ALL) ALL" >> /etc/sudoers
 echo "Added '$user' to sudoers"
 
 # Setup SSH
@@ -39,7 +42,7 @@ echo "Port $port" >> /etc/ssh/sshd_config
 SSH_DIR=/home/$user/.ssh
 mkdir $SSH_DIR
 chmod 0755 $SSH_DIR
-echo "$PUBKEY/n" > $SSH_DIR/authorized_keys
+echo "$PUBKEY" > $SSH_DIR/authorized_keys
 chmod 0600 $SSH_DIR/autthorized_keys
 chown -R $user:$user $SSH_DIR
 service ssh restart 
@@ -47,22 +50,22 @@ echo "Updated ssh config"
 
 # Install Docker
 echo -n "Installing docker... "
-apt install -y \
+$apt install -y \
     apt-transport-https \
     ca-certificates \
     software-properties-common > /dev/null
 
 curl -fsSL https://yum.dockerproject.org/gpg | apt-key add -
 add-apt-repository "deb https://apt.dockerproject.org/repo/ debian-$(lsb_release -cs) main"
-apt update > /dev/null
-apt install -y docker-engine > /dev/null
+$apt update > /dev/null
+$apt install -y docker-engine > /dev/null
 echo "Done"
 
 ### Update rc.local
 # Remove any auto-added root ssh keys
 echo '' > /etc/rc.local
-echo "(sleep 15 && rm -rf /root/.ssh) &\n" >> /etc/rc.local
-echo "exit 0\n" >> /etc/rc.local
+echo "(sleep 15 && rm -rf /root/.ssh) &" >> /etc/rc.local
+echo "exit 0" >> /etc/rc.local
 "Updated rc.local"
 
 # Change hostname
