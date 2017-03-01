@@ -4,7 +4,11 @@
 user="user"
 host="debian"
 port="$(( ( RANDOM % 50000 ) + 10000 ))"
-ip=`curl icanhazip.com`
+
+
+echo -n "Finding IP address... "
+ip=`curl --silent icanhazip.com`
+echo "Done. IP=$ip"
 
 # Prompt user, if required
 if [ ! -n "$PUBKEY" ]; then
@@ -15,15 +19,19 @@ if [ ! -n "$PUBKEY" ]; then
 fi
 
 # Update packages
-apt update
-apt upgrade -y
+echo -n "Updating and upgrading apt packages... "
+apt update > /dev/null
+apt upgrade -y > /dev/null
+echo "Done"
 
 # Create new user
 useradd -m $user
+echo "Created new user '$user'"
 
 # Sudo
 echo "### USER ADDED TO SUDOERS ###" >> /etc/sudoers 
 echo "$user\t(ALL:ALL) ALL\n" >> /etc/sudoers
+echo "Added '$user' to sudoers"
 
 # Setup SSH
 cp sshd_config /etc/ssh/sshd_config
@@ -34,24 +42,28 @@ chmod 0755 $SSH_DIR
 echo "$PUBKEY/n" > $SSH_DIR/authorized_keys
 chmod 0600 $SSH_DIR/autthorized_keys
 chown -R $user:$user $SSH_DIR
-service ssh restart
+service ssh restart 
+echo "Updated ssh config"
 
 # Install Docker
+echo "Installing docker... "
 apt install -y \
     apt-transport-https \
     ca-certificates \
-    software-properties-common
+    software-properties-common > /dev/null
 
 curl -fsSL https://yum.dockerproject.org/gpg | apt-key add -
 add-apt-repository "deb https://apt.dockerproject.org/repo/ debian-$(lsb_release -cs) main"
-apt update
-apt install -y docker-engine
+apt update > /dev/null
+apt install -y docker-engine > /dev/null
+echo "Done"
 
 ### Update rc.local
 # Remove any auto-added root ssh keys
 echo '' > /etc/rc.local
 echo "(sleep 15 && rm -rf /root/.ssh) &\n" >> /etc/rc.local
 echo "exit 0\n" >> /etc/rc.local
+"Updated rc.local"
 
 # Change hostname
 ORIGINAL_HOST=`cat /etc/hostname`
