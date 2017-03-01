@@ -46,7 +46,7 @@ service ssh restart
 echo "Updated ssh config"
 
 # Install Docker
-echo "Installing docker... "
+echo -n "Installing docker... "
 apt install -y \
     apt-transport-https \
     ca-certificates \
