@@ -43,7 +43,7 @@ SSH_DIR=/home/$user/.ssh
 mkdir $SSH_DIR
 chmod 0755 $SSH_DIR
 echo "$PUBKEY" > $SSH_DIR/authorized_keys
-chmod 0600 $SSH_DIR/autthorized_keys
+chmod 0600 $SSH_DIR/authorized_keys
 chown -R $user:$user $SSH_DIR
 service ssh restart 
 echo "Updated ssh config"
