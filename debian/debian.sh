@@ -39,6 +39,7 @@ echo "Added '$user' to sudoers"
 # Setup SSH
 cp sshd_config /etc/ssh/sshd_config
 echo "Port $port" >> /etc/ssh/sshd_config
+chmod 0644 /etc/ssh/sshd_config
 SSH_DIR=/home/$user/.ssh
 mkdir $SSH_DIR
 chmod 0755 $SSH_DIR
@@ -66,7 +67,7 @@ echo "Done"
 echo '' > /etc/rc.local
 echo "(sleep 15 && rm -rf /root/.ssh) &" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
-"Updated rc.local"
+echo "Updated rc.local"
 
 # Change hostname
 ORIGINAL_HOST=`cat /etc/hostname`

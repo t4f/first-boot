@@ -1,10 +1,11 @@
-AuthorizedKeysFile  %h/.ssh/authorized_keys
+AuthorizedKeysFile %h/.ssh/authorized_keys
 ChallengeResponseAuthentication no
 Ciphers aes256-ctr
 HostKey /etc/ssh/ssh_host_dsa_key
 HostKey /etc/ssh/ssh_host_ecdsa_key
 HostKey /etc/ssh/ssh_host_rsa_key
 IgnoreRhosts yes
+KeyRegenerationInterval 3600
 LoginGraceTime 60
 PasswordAuthentication no
 PermitEmptyPasswords no
@@ -12,10 +13,12 @@ PermitRootLogin no
 Protocol 2
 PubkeyAuthentication yes
 RSAAuthentication no
+ServerKeyBits 2048
 StrictModes yes
 Subsystem sftp /usr/lib/openssh/sftp-server
 TCPKeepAlive yes
 UseDNS no
 UsePAM no
 UsePrivilegeSeparation yes
+X11Forwarding no
 
