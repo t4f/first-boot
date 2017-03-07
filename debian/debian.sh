@@ -67,11 +67,14 @@ echo "Updated rc.local"
 
 # Change hostname
 ORIGINAL_HOST=`cat /etc/hostname`
-sed -i -e "s/$ORIGINAL_HOST/$HOST/g" /etc/hosts
-echo $HOST > /etc/hostname
+sed -i -e "s/$ORIGINAL_HOST/$host/g" /etc/hosts
+echo $host > /etc/hostname
 
 # Set user password (for invoking sudo)
-passwd $USER
+passwd $user
+
+# Lock root user
+passwd --lock root
 
 # Print login 
 echo "To login, run \`ssh -i ~/.ssh/$host -p $port $user@$ip\`"
