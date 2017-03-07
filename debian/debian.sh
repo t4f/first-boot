@@ -29,12 +29,8 @@ echo "Done"
 
 # Create new user
 useradd -m $user
+usermod -aG sudo $user
 echo "Created new user '$user'"
-
-# Sudo
-echo "### USER ADDED TO SUDOERS ###" >> /etc/sudoers 
-echo "$user\t(ALL:ALL) ALL" >> /etc/sudoers
-echo "Added '$user' to sudoers"
 
 # Setup SSH
 cp sshd_config /etc/ssh/sshd_config
@@ -42,7 +38,7 @@ echo "Port $port" >> /etc/ssh/sshd_config
 chmod 0644 /etc/ssh/sshd_config
 SSH_DIR=/home/$user/.ssh
 mkdir $SSH_DIR
-chmod 0755 $SSH_DIR
+chmod 0700 $SSH_DIR
 echo "$PUBKEY" > $SSH_DIR/authorized_keys
 chmod 0600 $SSH_DIR/authorized_keys
 chown -R $user:$user $SSH_DIR
