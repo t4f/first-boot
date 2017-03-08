@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Constants
-apt="apt-get"
+apt="apt-get -qq -o=Dpkg::Use-Pty=0"  # Suppress output
 
 # Defaults
 user="user"
@@ -46,7 +46,7 @@ service ssh restart
 echo "Updated ssh config"
 
 # Install Docker
-echo -n "Installing docker... "
+echo  -n "Installing docker... "
 $apt install -y \
     apt-transport-https \
     ca-certificates \
@@ -78,11 +78,6 @@ passwd --lock root
 
 # Print login 
 echo "To login, run \`ssh -i ~/.ssh/$host -p $port $user@$ip\`"
-
-# Reboot
-echo "Rebooting..."
-sleep 3
-reboot
 
 exit 0
 
