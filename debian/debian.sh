@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Constants
-apt="apt-get -qq -o=Dpkg::Use-Pty=0"  # Suppress output
+apt="apt-get"  # -qq -o=Dpkg::Use-Pty=0"  # Suppress output
 
 # Defaults
 user="user"
@@ -23,8 +23,8 @@ fi
 
 # Update packages
 echo -n "Updating and upgrading apt packages... "
-$apt update > /dev/null
-$apt upgrade -y > /dev/null
+$apt update
+$apt upgrade -y
 echo "Done"
 
 # Create new user
@@ -50,12 +50,12 @@ echo  -n "Installing docker... "
 $apt install -y \
     apt-transport-https \
     ca-certificates \
-    software-properties-common > /dev/null
+    software-properties-common
 
 curl -fsSL https://yum.dockerproject.org/gpg | apt-key add -
 add-apt-repository "deb https://apt.dockerproject.org/repo/ debian-$(lsb_release -cs) main"
-$apt update > /dev/null
-$apt install -y docker-engine > /dev/null
+$apt update
+$apt install -y docker-engine
 echo "Done"
 
 ### Update rc.local
